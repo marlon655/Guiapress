@@ -1,0 +1,50 @@
+<%- include("../../partials/header.ejs") %> 
+<%- include("../../partials/navbar.ejs") %> 
+<body>
+    <div class="container">
+        <hr>
+        <h2>Categorias</h2>
+        <a href="/admin/categories/new" class="btn btn-success">Criar nova categoria</a>
+        <hr>
+        <table class="table table-bordered" >
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Titulo</th>
+                    <th>Slug</th>
+                    <th>ações</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% categories.forEach(category =>{ %>
+                    <tr>
+                        <th><%= category.id %></th>
+                        <th><%= category.title %></th>
+                        <th><%= category.slug %></th>
+                        <th>
+                            <button class="btn btn-warning">Editar</button>
+                            <form id="subform" method="post" action="/categories/delete" style="display:inline;" >
+                                <input type="hidden" name="id" value="<%= category.id %>">
+                                <button name="del" class="btn btn-danger">Deletar</button>
+                            </form>
+                        </th>
+                    </tr>
+                <% }) %> 
+            </tbody>
+        </table>
+    </div>
+</body>
+<%- include("../../partials/footer.ejs") %>
+<script>
+    let element = document.querySelectorAll("#subform");
+    element.forEach((item,index)=>{
+        element[index].addEventListener('submit',(e) => {
+            e.preventDefault();
+            let resp = confirm('Deseja excluir?');
+            if(resp){
+                e.target.submit();
+            }
+
+        })        
+    });  
+</script> 
