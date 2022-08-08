@@ -3,8 +3,8 @@
 <body>
     <div class="container">
         <hr>
-        <h2>Categorias</h2>
-        <a href="/admin/categories/new" class="btn btn-success">Criar nova categoria</a>
+        <h2>Artigos</h2>
+        <a href="/admin/articles/new" class="btn btn-success">Criar novo artigo</a>
         <hr>
         <table class="table table-bordered" >
             <thead>
@@ -12,23 +12,22 @@
                     <th>ID</th>
                     <th>Titulo</th>
                     <th>Slug</th>
+                    <th>Categoria</th>
                     <th>ações</th>
                 </tr>
             </thead>
             <tbody>
-                <% categories.forEach(category =>{ %>
-                    <tr>
-                        <th><%= category.id %></th>
-                        <th><%= category.title %></th>
-                        <th><%= category.slug %></th>
-                        <th>
-                            <a href="/admin/categories/edit/<%= category.id %> " class="btn btn-warning">Editar</a>
-                            <form id="subform" method="post" action="/categories/delete" style="display:inline;" >
-                                <input type="hidden" name="id" value="<%= category.id %>">
-                                <button name="del" class="btn btn-danger">Deletar</button>
-                            </form>
-                        </th>
-                    </tr>
+                <% articles.forEach((article)=>{ %>
+                    <th><%= article.id %></th>
+                    <th><%= article.title %></th>
+                    <th><%= article.slug %></th>
+                    <th><%= article.category.title %></th>
+                    <th>
+                        <form id="subform" method="post" action="/articles/delete" style="display:inline;" >
+                            <input type="hidden" name="id" value="<%= article.id %>">
+                            <button name="del" class="btn btn-danger">Deletar</button>
+                        </form>
+                    </th>
                 <% }) %> 
             </tbody>
         </table>
