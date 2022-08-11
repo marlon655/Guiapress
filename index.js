@@ -2,12 +2,14 @@ const express = require("express");
 const app = express();
 const bodyParser = require("body-parser");
 const connection = require("./database/database");
-//controllers
+//Importar Controllers
 const categoriesController = require("./categories/categoriesController");
 const articlesController = require("./articles/articlesController");
-//models
+const usersController = require("./user/usersController");
+//Executar Models
 const article = require("./articles/article");
 const category = require("./categories/category");
+const User = require("./user/userModel");
 
 app.set('view engine','ejs');//view engine
 app.use(express.static('public'));//images,arquivos...
@@ -23,13 +25,63 @@ connection
         console.log(error);
     })
 
+//Usar Controllers
 app.use("/", categoriesController);
 app.use("/", articlesController);
+app.use("/",usersController);
+
 //routes
 app.get("/",(req, res)=>{
-    res.render('index');
+    article.findAll({
+        order:[
+            ['id','DESC']
+        ],
+        limit: 3
+    }).then(articles => {
+        category.findAll().then(categories => {
+            res.render('index',{articles: articles, categories:categories});
+        })
+    })
 });
 
+app.get("/:slug",(req, res)=>{
+    let slug = req.params.slug;
+    article.findOne({
+        where:{
+            slug: slug
+        }
+    }).then(article =>{
+        if(article != undefined){
+            category.findAll().then(categories => {
+                res.render('article',{article: article, categories:categories});
+            });
+        }else{
+            res.redirect("/");
+        }
+    }).catch(err => {
+        res.redirect("/");
+    });
+});
+
+app.get("/category/:slug", (req,res) => {
+    let slug = req.params.slug;
+    category.findOne({
+        where:{
+            slug: slug
+        },
+        include: [{model: article}]
+    }).then( categorie => {
+        if(categorie != undefined){
+            category.findAll().then(categories => {
+                res.render("index",{articles: categorie.articles, categories: categories});
+            });
+        }else{
+            res.redirect("/");
+        }
+    }).catch(err => {
+        res.redirect("/");
+    })
+})
 app.listen(8080,()=>{
     console.log("Servidor Online!");
 });

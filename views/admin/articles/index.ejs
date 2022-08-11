@@ -18,6 +18,7 @@
             </thead>
             <tbody>
                 <% articles.forEach((article)=>{ %>
+                    <tr>
                     <th><%= article.id %></th>
                     <th><%= article.title %></th>
                     <th><%= article.slug %></th>
@@ -28,6 +29,7 @@
                             <button name="del" class="btn btn-danger">Deletar</button>
                         </form>
                     </th>
+                </tr>
                 <% }) %> 
             </tbody>
         </table>
