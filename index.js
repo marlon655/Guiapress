@@ -1,5 +1,7 @@
+//bibliotecas
 const express = require("express");
 const app = express();
+const session = require("express-session");
 const bodyParser = require("body-parser");
 const connection = require("./database/database");
 //Importar Controllers
@@ -10,6 +12,10 @@ const usersController = require("./user/usersController");
 const article = require("./articles/article");
 const category = require("./categories/category");
 const User = require("./user/userModel");
+//Sessions
+app.use(session({
+    secret: "456123789", cookie: { maxAge: 30000 }
+}))
 
 app.set('view engine','ejs');//view engine
 app.use(express.static('public'));//images,arquivos...
