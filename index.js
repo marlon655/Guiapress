@@ -14,7 +14,7 @@ const category = require("./categories/category");
 const User = require("./user/userModel");
 //Sessions
 app.use(session({
-    secret: "456123789", cookie: { maxAge: 30000 }
+    secret: "456123789", cookie: { maxAge: 3000000 }
 }))
 
 app.set('view engine','ejs');//view engine
